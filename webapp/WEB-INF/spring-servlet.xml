@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd"
+	xmlns:mvc="http://www.springframework.org/schema/mvc">
+
+
+
+	<mvc:default-servlet-handler />
+
+	<!-- 
+		D.S가 controller에서 mapping이 없을 때 default Servlet에 위임(css, image)깨지는 
+		이유? 
+	-->
+
+	<!-- validator, conversionService, messageConverter를 자동으로 등록 -->
+	<mvc:annotation-driven />
+
+	<!-- annotation 을 만들때? message converter? -->
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.hanains.mysite" />
+
+	<!-- 
+		Spring @MVC 모든 클래스를 스캔해서 annotation 생성해라 -> @Controller를 스캔해서 Controller 
+		객체를 생성하게 한다. @Controller를 찾아 객체를 생성하고 메소드를 스캔을 한다. 메소드 스캔은 @RequestMapping 
+		annotation을 스캔한다.
+	-->
+
+
+
+	<!-- 기본 뷰 리졸버 -->
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="1" />
+	</bean>
+
+
+
+</beans>
