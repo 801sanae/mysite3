@@ -1,11 +1,10 @@
 package com.hanains.mysite.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hanains.mysite.exception.RepositoryException;
@@ -13,128 +12,26 @@ import com.hanains.mysite.vo.UserVo;
 
 @Repository//scanning을 위한 annotation, component도 상관없음?~
 public class UserDao {
+
+	@Autowired
+	private SqlSession sqlSession;
 	
-	private Connection getConnection() throws SQLException {
-		Connection connection = null;
-		
-		try {
-			//1.드라이버 로딩
-			Class.forName( "oracle.jdbc.driver.OracleDriver" );
-		
-			//2.커넥션 만들기(ORACLE DB)
-			String dbURL  = "jdbc:oracle:thin:@localhost:1521:xe";
-			connection = DriverManager.getConnection( dbURL, "webdb", "webdb" );
-			
-		} catch( ClassNotFoundException ex ){
-			System.out.println( "드라이버 로딩 실패-" + ex );
-		}
-		
-		return connection;
-	}
 	
 	public UserVo get( String email, String password ) throws RepositoryException{
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", email);
+		map.put("password", password);
 		
-		UserVo vo = new UserVo();
-		
-		try{
-			//1. get Connection
-			conn = getConnection();
-			
-			//2. prepare statement
-			String sql = 
-				" select no, name, email" +
-				"   from member" +
-				"  where email=?"+
-				"    and password=?";
-			pstmt = conn.prepareStatement( sql );
-			
-			//3. binding
-			pstmt.setString( 1, email );
-			pstmt.setString( 2, password );
-			
-			//4. execute SQL
-			rs = pstmt.executeQuery();
-			if( rs.next() ) {
-				int no = rs.getInt( 1 );
-				String name = rs.getString( 2 );
-				String email2 = rs.getString( 3 );
-				
-				vo = new UserVo();
-				vo.setNo(no);
-				vo.setName(name);
-				vo.setEmail(email2);
-			}
-			
-			System.out.println("::get() vo " + vo);
-			
-		} catch( SQLException ex ) {
-			//log 처리?
-			System.out.println( "SQL Error:" + ex );
-			//console환경이 없는 서버환경에서는 별로임
-			throw new RepositoryException(ex.toString());
-			
-		} finally {
-			//5. clear resources
-			try{
-				if( rs != null ) {
-					rs.close();
-				}
-				if( pstmt != null ) {
-					pstmt.close();
-				}
-				if( conn != null ) {
-					conn.close();
-				}
-			} catch( SQLException ex ) {
-				ex.printStackTrace();
-			}
-		}
-		
-		return vo;
+		UserVo userVo = sqlSession.selectOne("user.getbyEmailAndPassword", map);
+		return userVo;
 	}
 
 	public void insert( UserVo vo ) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			//1. DB Connection
-			conn = getConnection();
-			
-			//2. prepare statment
-			String sql = 
-				" insert" +
-				" into member" +
-				" values ( member_no_seq.nextval, ?, ?, ?, ? )";
-			pstmt = conn.prepareStatement( sql );
-			
-			//3. binding
-			pstmt.setString( 1, vo.getName() );
-			pstmt.setString( 2, vo.getEmail() );
-			pstmt.setString( 3, vo.getPassword() );
-			pstmt.setString( 4, vo.getGender() );
-			
-			//4. execute SQL
-			pstmt.executeUpdate();
-			
-		} catch( SQLException ex ) {
-			System.out.println( "sql error:" + ex );
-			ex.printStackTrace();
-		} finally {
-			//5. clear resources
-			try{
-				if( pstmt != null ) {
-					pstmt.close();
-				}
-				if( conn != null ) {
-					conn.close();
-				}
-			} catch( SQLException ex ) {
-				ex.printStackTrace();
-			}
-		}
+		sqlSession.insert("user.insert", vo);
+	}
+	
+	public UserVo get(int no){
+		UserVo vo = sqlSession.selectOne("user.getByNo", no);
+		return vo;
 	}
 }

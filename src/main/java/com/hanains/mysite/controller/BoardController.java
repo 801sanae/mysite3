@@ -48,9 +48,10 @@ public class BoardController {
 	}
 	
 	@RequestMapping("view")
-	public String view(@RequestParam("no")int no, HttpServletRequest request){
-		System.out.println("::contorller:"+no);
-		BoardVo board = boardService.getView(no);
+	public String view(@ModelAttribute BoardVo vo, HttpServletRequest request){
+		System.out.println("::contorller:"+vo.getNo());
+		
+		BoardVo board = boardService.getView(vo);
 		
 		request.setAttribute("board", board);
 		
@@ -58,21 +59,23 @@ public class BoardController {
 	}
 	
 	@RequestMapping("updateform")
-	public String updateform(@RequestParam("no")int no, HttpServletRequest request){
-		BoardVo board = boardService.getView(no);
+	public String updateform(@ModelAttribute BoardVo vo, HttpServletRequest request){
+		BoardVo board = boardService.getView(vo);
 		request.setAttribute("board", board);
 		return "/board/modify";
 	}
 	
 	@RequestMapping("update")
 	public String update(HttpServletRequest request,
+						@ModelAttribute BoardVo vo,
 						@RequestParam("no") int no,
 						@RequestParam("title") String title,
 						@RequestParam("content") String content){
 		
-		BoardVo board = boardService.getView(no);
+		BoardVo board = boardService.getView(vo);
 		board.setTitle(title);
 		board.setContents(content);
+		
 		request.setAttribute("board", board);
 		
 		boardService.update(board);

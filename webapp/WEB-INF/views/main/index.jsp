@@ -29,7 +29,7 @@
 						입니다.<br> <br> 
 						<c:choose>
 							<c:when test="${!empty authUser }">
-							<a href="${pageContext.request.contextPath}/gb/list">방명록</a>에 글 남기기<br>
+							<a href="${pageContext.request.contextPath}/guestbook/list">방명록</a>에 글 남기기<br>
 							</c:when>
 							<c:otherwise>
 							</c:otherwise>

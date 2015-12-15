@@ -13,7 +13,7 @@ import com.hanains.mysite.vo.UserVo;
 public class GuestBookService {
 
 	@Autowired
-	GuestBookDao dao;
+	private GuestBookDao dao;
 	
 	public List<GuestBookVo> getlist() {
 		List<GuestBookVo> list = dao.getlist();
