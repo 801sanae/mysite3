@@ -19,6 +19,14 @@
 				WHERE no=#{no}
 		]]>
 	</select>
+	
+	<select id="selectByEmail" parameterType="String" resultType="UserVo">
+		<![CDATA[
+			SELECT no, name, email,gender
+			FROM member
+			WHERE email=#{email}
+		]]>
+	</select>
 
 	<insert id="insert" parameterType="UserVo">
 		<![CDATA[
@@ -27,4 +35,6 @@
 				values ( member_no_seq.nextval, #{name}, #{email}, #{password}, #{gender} )
 		]]>
 	</insert>
+	
+	
 </mapper>

@@ -34,4 +34,9 @@ public class UserDao {
 		UserVo vo = sqlSession.selectOne("user.getByNo", no);
 		return vo;
 	}
+
+	public UserVo get(String email) {
+		UserVo vo = sqlSession.selectOne("user.selectByEmail", email);
+		return null;
+	}
 }

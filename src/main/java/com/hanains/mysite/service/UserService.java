@@ -21,4 +21,10 @@ public class UserService {
 		return authUser;
 	}
 
+	public UserVo getUser(String email) {
+		UserVo userVo = userDao.get(email);
+		return userVo;
+	}
+
+
 }
