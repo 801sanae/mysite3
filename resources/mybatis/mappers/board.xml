@@ -5,9 +5,22 @@
 	
 	<insert id="insert" parameterType="BoardVo">
 		<![CDATA[
-		INSERT INTO BOARD VALUES(
-				BOARD_NO_SEQ.NEXTVAL,#{title},#{contents},#{member_no},#{view_cnt},SYSDATE)
+			INSERT INTO BOARD 
 		]]>
+	<choose>
+		<when test="group_no == null">
+				<![CDATA[
+				VALUES(BOARD_NO_SEQ.NEXTVAL,#{title},#{contents},#{member_no},#{view_cnt},SYSDATE,BOARD_NO_SEQ.CURRVAL,1,0)
+				]]>
+		</when>
+		<otherwise>
+				<![CDATA[
+				VALUES(BOARD_NO_SEQ.NEXTVAL, #{title},#{contents},#{member_no},#{view_cnt},SYSDATE,#{groupNo }, nvl((SELECT MAX(order_no) FROM BOARD),0)+1, #{depth } + 1,  )
+				]]>
+		</otherwise>
+	</choose>
+		
+		
 	</insert>
 	
 	<update id="update" parameterType="BoardVo">
@@ -19,7 +32,9 @@
 	
 	<select id="getView" resultType="BoardVo">
 		<![CDATA[		
-			SELECT no, title, content, member_no 
+			SELECT 
+			no, title, content, member_no,view_cnt,reg_date,
+			group_no,order_no,depth 
 			FROM board 
 			WHERE no=#{no}
 		]]>			

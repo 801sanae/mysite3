@@ -45,6 +45,8 @@
 					<c:choose>
 						<c:when test="${!empty authUser }">
 							<a href="${pageContext.request.contextPath}/board/updateform?no=${board.no}">글수정</a>
+							<a href="${pageContext.request.contextPath}/board/writeform?no=${board.no}&group_no=${board.group_no}&order_no=${board.order_no}&depth=${board.depth}">댓글</a>
+							
 						</c:when>
 						<c:otherwise>
 						</c:otherwise>

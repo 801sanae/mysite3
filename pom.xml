@@ -71,11 +71,24 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.1.1</version>
 		</dependency>
+		
+		<!-- common fileupload 파일업로드처리1-->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+		</dependency>
+		
 
 	</dependencies>
 	<!-- java 1.8 spring 4.X -->
 
-	<!-- -->
+	<!--oracle -->
 	<repositories>
 		<repository>
 			<id>oracle</id>
@@ -83,10 +96,6 @@
 			<url>http://maven.jahia.org/maven2</url>
 		</repository>
 	</repositories>
-  
-  
-  
-  
   
   <build>
     <plugins>

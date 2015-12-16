@@ -20,6 +20,9 @@
 		<div id="content">
 			<div id="board">
 				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board/write">
+					<input type="hidden" name="groupNo" value="${board.groupNo }">
+					<input type="hidden" name="orderNo" value="${board.orderNo }">
+					<input type="hidden" name="depth" value="${board.depth }">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>

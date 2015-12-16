@@ -29,12 +29,18 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/writeform")
-	public String writeform(){
+	public String writeform(@ModelAttribute BoardVo board,
+			@RequestParam(value="group_no", required=true, defaultValue="0")int group_no,
+			@RequestParam(value="order_no", required=true, defaultValue="0")int order_no,
+			@RequestParam(value="depth", required=true, defaultValue="0")int depth){
+		System.out.println(board);
+		System.out.println(group_no+":"+order_no+":"+depth);
 		return "/board/write";
 	}
 	
 	@RequestMapping("/write")
-	public String write(@ModelAttribute BoardVo vo,HttpServletRequest request){
+	public String write(@ModelAttribute BoardVo vo,
+			HttpServletRequest request){
 		String content = request.getParameter("content");
 		UserVo memberVo = (UserVo) request.getSession(true).getAttribute("authUser");
 		
