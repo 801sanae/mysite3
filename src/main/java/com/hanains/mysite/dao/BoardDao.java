@@ -15,7 +15,7 @@ public class BoardDao {
 	@Autowired
 	private SqlSession sqlSession;
 
-	//TODO
+	//TODO 트렌젝션 @처리
 	@Transactional
 	public void insert(BoardVo board){
 		sqlSession.update("board.update",board);

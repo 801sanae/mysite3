@@ -87,7 +87,6 @@
 								
 			</div>
 		</div>
-		
 		<!-- navigation -->
 		<c:import url="/WEB-INF/views/include/navi.jsp"/>
 		

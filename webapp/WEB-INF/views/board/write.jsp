@@ -19,7 +19,7 @@
 		
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board/write">
+				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board/write" enctype="multipart/form-data">
 					<input type="hidden" name="group_no" value="${board.group_no }">
 					<input type="hidden" name="order_no" value="${board.order_no }">
 					<input type="hidden" name="depth" value="${board.depth }">
@@ -31,6 +31,13 @@
 						<tr>
 							<td class="label">제목</td>
 							<td><input type="text" name="title" value=""></td>
+						</tr>
+						<tr>
+							<td class="label">파일</td>
+							<td>
+							<label>업로드 파일:</label>
+							<input type="file" name="uploadFile">
+							</td>
 						</tr>
 						<tr>
 							<td class="label">내용</td>

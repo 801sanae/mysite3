@@ -35,7 +35,11 @@
 						<td class="label">내용</td>
 						<td>
 							<div class="view-content">
-							${board.contents}
+								${board.contents}${profileUrl }
+								
+								<c:if test="${not empty profileUrl }">
+									<img src="${pageContext.request.contextPath }${profileUrl }" style="width: 150px">
+								</c:if>
 							</div>
 						</td>
 					</tr>

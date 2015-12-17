@@ -18,6 +18,9 @@
 		D.S가 controller에서 mapping이 없을 때 default Servlet에 위임(css, image)깨지는 
 		이유? 
 	-->
+	
+	<!-- the mvc resources tag does the magic 파일업로드처리3 -->
+ 	<mvc:resources mapping="/profile-images/**" location="file:/temp/" />
 
 	<!-- validator, conversionService, messageConverter를 자동으로 등록 -->
 	<mvc:annotation-driven >
@@ -105,7 +108,18 @@
         </mvc:interceptor>
         
     </mvc:interceptors>
-
+    
+    
+	<!-- 멀티파트 리졸버 파일업로드처리2 -->
+	<bean id="multipartResolver" 
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 최대업로드 가능한 바이트크기 -->
+		<property name="maxUploadSize" value="52428800" />
+		<!-- 디스크에 임시 파일을 생성하기 전에 메모리에 보관할수있는 최대 바이트 크기 -->
+		<!-- property name="maxInMemorySize" value="52428800" /-->
+		<!-- defaultEncoding -->
+		<property name="defaultEncoding" value="utf-8" />
+	</bean>	
 
 
 

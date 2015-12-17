@@ -1,5 +1,7 @@
 package com.hanains.mysite.controller;
 
+import java.io.FileOutputStream;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,22 +10,31 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hanains.mysite.annotation.Auth;
 import com.hanains.mysite.annotation.AuthUser;
 import com.hanains.mysite.service.BoardService;
+import com.hanains.mysite.service.FileService;
 import com.hanains.mysite.vo.BoardVo;
+import com.hanains.mysite.vo.FileVo;
 import com.hanains.mysite.vo.UserVo;
 
 @Controller
 @RequestMapping("/board")
 public class BoardController {
 
+	private static final String SAVE_PATH = "/temp/"; //저장위치 
+	
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private FileService fileService;
 	
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request){
@@ -54,14 +65,40 @@ public class BoardController {
 	
 	@Auth
 	@RequestMapping("/write")
-	public String write(@ModelAttribute BoardVo vo,
+	public String write(
+			@ModelAttribute BoardVo vo,
+			@RequestParam( "uploadFile" ) MultipartFile multipartFile, 
+			Model model,
+			@ModelAttribute FileVo file,
 			@AuthUser UserVo authUser){
 		vo.setMember_no(authUser.getNo());
 		
-		System.out.println("write:"+vo);
+		// 파일 처리
+			if( multipartFile.isEmpty() == false ) {
+				
+		        String fileOriginalName = multipartFile.getOriginalFilename();
+		        String extName = fileOriginalName.substring( fileOriginalName.lastIndexOf(".") + 1, fileOriginalName.length() );
+		        String fileName = multipartFile.getName();
+		        Long size = multipartFile.getSize();
+		        
+		        String saveFileName = genSaveFileName( extName );
 		
+		        writeFile( multipartFile, SAVE_PATH, saveFileName );
+		        
+		        String url = "/profile-images/" + saveFileName;
 		
+		        file.setPath(url);
+		        file.setBoardNo(vo.getNo());
+		        
+		        
+		        model.addAttribute( "profileUrl", url );
+			}
+		
+			
+		fileService.insert(file);
+			
 		boardService.insert(vo);
+		
 		return "redirect:/board/list";
 	}
 	
@@ -90,5 +127,41 @@ public class BoardController {
 						@ModelAttribute BoardVo vo){
 		boardService.update(vo);
 		return "/board/view";
+	}
+	
+	
+	private void writeFile( MultipartFile file, String path, String fileName ) {
+		FileOutputStream fos = null;
+		try {
+			byte fileData[] = file.getBytes();
+			fos = new FileOutputStream( path + fileName );
+			fos.write(fileData);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (Exception e) {
+				}
+			}
+		}
+	}
+	
+	private String genSaveFileName( String extName ) {
+		
+        Calendar calendar = Calendar.getInstance();
+		String fileName = "";
+        
+        fileName += calendar.get( Calendar.YEAR );
+        fileName += calendar.get( Calendar.MONTH );
+        fileName += calendar.get( Calendar.DATE );
+        fileName += calendar.get( Calendar.HOUR );
+        fileName += calendar.get( Calendar.MINUTE );
+        fileName += calendar.get( Calendar.SECOND );
+        fileName += calendar.get( Calendar.MILLISECOND );
+        fileName += ( "." + extName );
+        
+        return fileName;
 	}
 }
