@@ -8,7 +8,6 @@ public class BoardVo {
 	private int view_cnt;
 	private int member_no;
 	private String member_name;
-	private UserVo userVo;
 	private String reg_date;
 	private int group_no;
 	private int order_no;
@@ -28,15 +27,11 @@ public class BoardVo {
 	}
 	
 	public int getMember_no() {
-		return userVo.getNo();
+		return member_no;
 	}
 	
 	public String getMember_name() {
 		return member_name;
-	}
-	
-	public UserVo getUserVo() {
-		return userVo;
 	}
 	
 	public String getReg_date() {
@@ -77,9 +72,6 @@ public class BoardVo {
 		this.view_cnt = view_cnt;
 	}
 	
-	public void setUserVo(UserVo userVo) {
-		this.userVo = userVo;
-	}
 	public void setReg_date(String reg_date) {
 		this.reg_date = reg_date;
 	} 
@@ -98,8 +90,8 @@ public class BoardVo {
 	@Override
 	public String toString() {
 		return "BoardVo [no=" + no + ", title=" + title + ", contents=" + contents + ", view_cnt=" + view_cnt
-				+ ", member_no=" + member_no + ", member_name=" + member_name + ", userVo=" + userVo + ", reg_date="
-				+ reg_date + ", group_no=" + group_no + ", order_no=" + order_no + ", depth=" + depth + "]";
+				+ ", member_no=" + member_no + ", member_name=" + member_name + ", reg_date=" + reg_date + ", group_no="
+				+ group_no + ", order_no=" + order_no + ", depth=" + depth + "]";
 	}
 	
 }

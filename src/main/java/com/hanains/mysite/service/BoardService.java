@@ -14,8 +14,8 @@ public class BoardService {
 	@Autowired
 	private BoardDao dao;
 
-	public void insert(BoardVo vo) {
-		dao.insert(vo);
+	public void insert(BoardVo board) {
+		dao.insert(board);
 	}
 	
 	public List<BoardVo> getList() {
@@ -23,9 +23,9 @@ public class BoardService {
 		return list;
 	}
 
-	public BoardVo getView(BoardVo vo) {
-		BoardVo board = dao.getView(vo);
-		return board;
+	public BoardVo getView(BoardVo board) {
+		BoardVo vo = dao.getView(board);
+		return vo;
 	}
 
 	public void update(BoardVo board) {

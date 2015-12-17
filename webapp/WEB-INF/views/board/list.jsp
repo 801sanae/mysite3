@@ -34,18 +34,23 @@
 							<th>&nbsp;</th>
 						</tr>				
 				<c:set var="cnt" value="${fn:length(list)}"/>
-				
 				<c:forEach items="${list }" var = "board" varStatus="status">
 						<tr>
 							<td>${cnt-status.index}</td>
-							<td><a href="${pageContext.request.contextPath}/board/view?no=${board.no}">${board.title }</a></td>
+									<td class="title" style="padding-left:${( board.depth )*10 }px">
+										<c:if test="${board.depth > 0 }">
+											<img src="${pageContext.request.contextPath}/assets/images/ico-reply.gif">
+										</c:if> 
+										
+										<a href="${pageContext.request.contextPath}/board/view?no=${board.no}">${board.title }</a>
+									</td> 
 							<td>${board.member_name }</td>
 							<td>${board.view_cnt }</td>
 							<td>${board.reg_date}</td>
 					<c:choose>
 						<c:when test="${!empty authUser }">
 							<td><a href="${pageContext.request.contextPath}/" class="del">
-							<img src="${pageContext.request.contextPath}/assets/images/recycle.jpg">
+							<img src="${pageContext.request.contextPath}/assets/images/recycle.png">
 							</a></td>
 						</c:when>
 						<c:otherwise>
@@ -67,8 +72,10 @@
 						<li class="pg-next"><a href="#">다음 ▶</a></li>
 					</ul>	
 				</div>
-
-				<c:choose>
+						<div class="bottom">
+							<a href="${pageContext.request.contextPath}/board/writeform" id="new-book">글쓰기</a>
+						</div>
+<%-- 				<c:choose>
 					<c:when test="${!empty authUser }">
 						<div class="bottom">
 							<a href="${pageContext.request.contextPath}/board/writeform" id="new-book">글쓰기</a>
@@ -76,7 +83,7 @@
 					</c:when>
 					<c:otherwise>
 					</c:otherwise>
-				</c:choose>
+				</c:choose> --%>
 								
 			</div>
 		</div>

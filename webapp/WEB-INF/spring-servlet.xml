@@ -38,6 +38,12 @@
 				</property>
 			</bean>
 		</mvc:message-converters>
+	<!-- argument resolver -->
+	<mvc:argument-resolvers>
+		<bean class="com.hanains.mysite.annotation.AuthUserHandlerMethodArgumentResolver" />
+	</mvc:argument-resolvers> 
+		
+		
 	</mvc:annotation-driven>
 
 	<!-- annotation 을 만들때? message converter? -->
@@ -62,6 +68,44 @@
 		<property name="suffix" value=".jsp" />
 		<property name="order" value="1" />
 	</bean>
+	
+   <!-- Interceptors -->
+    <mvc:interceptors>
+    
+    <mvc:interceptor>
+    	<mvc:mapping path="/user/login"/>
+    	<bean class="com.hanains.mysite.interceptor.AuthLoginInterceptor"/>
+    </mvc:interceptor>
+    
+    <mvc:interceptor>
+    	<mvc:mapping path="/user/logout"/>
+    	<bean class="com.hanains.mysite.interceptor.AuthLogoutInterceptor"/>
+    </mvc:interceptor>
+    
+<!--         
+		<mvc:interceptor>
+        	<mvc:mapping path="/board/**" />
+    	<bean class="com.hanains.mysite.interceptor.MyInterceptor" />
+        </mvc:interceptor> 
+-->
+        
+<!--         
+		<mvc:interceptor>
+        	<mvc:mapping path="/user/**" />  
+    	<bean class="com.hanains.mysite.interceptor.MyInterceptor2" />
+        </mvc:interceptor> 
+-->
+        
+         <mvc:interceptor>
+        	<mvc:mapping path="/board/writeform" />  
+				<mvc:mapping path="/**"/><!--  모든 메소드 클래스를 체크해라 하지만 -> authintercepter로 가서 이어서 설명-->
+										 <!-- 하지만 이러면 CSS image도 다들어온다..-->
+				<mvc:exclude-mapping path="/assets/*"/><!-- 제외해라 -->
+    		<bean class="com.hanains.mysite.interceptor.AuthInterceptor" />
+        </mvc:interceptor>
+        
+    </mvc:interceptors>
+
 
 
 

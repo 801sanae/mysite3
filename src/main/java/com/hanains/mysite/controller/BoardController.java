@@ -3,13 +3,17 @@ package com.hanains.mysite.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.hanains.mysite.annotation.Auth;
+import com.hanains.mysite.annotation.AuthUser;
 import com.hanains.mysite.service.BoardService;
 import com.hanains.mysite.vo.BoardVo;
 import com.hanains.mysite.vo.UserVo;
@@ -28,34 +32,42 @@ public class BoardController {
 		return "/board/list";
 	}
 	
+	@Auth
 	@RequestMapping("/writeform")
-	public String writeform(@ModelAttribute BoardVo board,
-			@RequestParam(value="group_no", required=true, defaultValue="0")int group_no,
-			@RequestParam(value="order_no", required=true, defaultValue="0")int order_no,
-			@RequestParam(value="depth", required=true, defaultValue="0")int depth){
-		System.out.println(board);
-		System.out.println(group_no+":"+order_no+":"+depth);
+	public String writeform(@ModelAttribute BoardVo vo, @AuthUser UserVo authUser,
+			@RequestParam(value="group_no", required=false, defaultValue="0") int group_no,
+			@RequestParam(value="order_no", required=false, defaultValue="0") int order_no,
+			@RequestParam(value="depth", required=false, defaultValue="0") int depth,
+			HttpServletRequest request){
+		System.out.println("C:writeform"+authUser);
+		
+		vo.setMember_no(authUser.getNo());
+		vo.setDepth(depth);
+		vo.setGroup_no(group_no);
+		vo.setOrder_no(order_no);
+		
+		request.setAttribute("board", vo);
+		
+		
 		return "/board/write";
 	}
 	
+	@Auth
 	@RequestMapping("/write")
 	public String write(@ModelAttribute BoardVo vo,
-			HttpServletRequest request){
-		String content = request.getParameter("content");
-		UserVo memberVo = (UserVo) request.getSession(true).getAttribute("authUser");
+			@AuthUser UserVo authUser){
+		vo.setMember_no(authUser.getNo());
 		
-		vo.setUserVo(memberVo);
-		vo.setContents(content);
+		System.out.println("write:"+vo);
 		
-		System.out.println("::controller:"+vo);
 		
 		boardService.insert(vo);
 		return "redirect:/board/list";
 	}
 	
+	@Auth
 	@RequestMapping("view")
 	public String view(@ModelAttribute BoardVo vo, HttpServletRequest request){
-		System.out.println("::contorller:"+vo.getNo());
 		
 		BoardVo board = boardService.getView(vo);
 		
@@ -64,6 +76,7 @@ public class BoardController {
 		return "/board/view";
 	}
 	
+	@Auth
 	@RequestMapping("updateform")
 	public String updateform(@ModelAttribute BoardVo vo, HttpServletRequest request){
 		BoardVo board = boardService.getView(vo);
@@ -71,20 +84,11 @@ public class BoardController {
 		return "/board/modify";
 	}
 	
+	@Auth
 	@RequestMapping("update")
-	public String update(HttpServletRequest request,
-						@ModelAttribute BoardVo vo,
-						@RequestParam("no") int no,
-						@RequestParam("title") String title,
-						@RequestParam("content") String content){
-		
-		BoardVo board = boardService.getView(vo);
-		board.setTitle(title);
-		board.setContents(content);
-		
-		request.setAttribute("board", board);
-		
-		boardService.update(board);
+	public String update(@AuthUser UserVo authUser,
+						@ModelAttribute BoardVo vo){
+		boardService.update(vo);
 		return "/board/view";
 	}
 }

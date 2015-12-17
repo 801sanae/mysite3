@@ -20,9 +20,10 @@
 		<div id="content">
 			<div id="board">
 				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board/write">
-					<input type="hidden" name="groupNo" value="${board.groupNo }">
-					<input type="hidden" name="orderNo" value="${board.orderNo }">
+					<input type="hidden" name="group_no" value="${board.group_no }">
+					<input type="hidden" name="order_no" value="${board.order_no }">
 					<input type="hidden" name="depth" value="${board.depth }">
+					${board.group_no } ${board.order_no } ${board.depth }
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>
@@ -34,7 +35,7 @@
 						<tr>
 							<td class="label">내용</td>
 							<td>
-								<textarea id="content" name="content"></textarea>
+								<textarea id="content" name="contents"></textarea>
 							</td>
 						</tr>
 					</table>

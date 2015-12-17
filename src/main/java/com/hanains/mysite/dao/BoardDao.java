@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hanains.mysite.vo.BoardVo;
 
@@ -15,21 +16,25 @@ public class BoardDao {
 	private SqlSession sqlSession;
 
 	//TODO
-	public void insert(BoardVo vo){
-		sqlSession.insert("board.insert", vo);
+	@Transactional
+	public void insert(BoardVo board){
+		sqlSession.update("board.update",board);
+		sqlSession.insert("board.insert", board);
 	}
 	
 	//TODO
 	public void delete(){}
 	
 	//TODO
-	public void update(BoardVo vo){
-		sqlSession.update("guestbook.update", vo);
+	public void update(BoardVo board){
+		sqlSession.update("DAOupdate : ", board);
 	}
 	
 	//TODO
-	public BoardVo getView(BoardVo vo){
-		BoardVo boardVo =sqlSession.selectOne("board.getView", vo); 
+	public BoardVo getView(BoardVo board){
+		
+		BoardVo boardVo =sqlSession.selectOne("board.getView", board); 
+		System.out.println("DAOgetView:"+boardVo);
 		return boardVo;
 	}
 	

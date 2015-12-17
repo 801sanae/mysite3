@@ -4,18 +4,16 @@
 <mapper namespace="board">
 	
 	<insert id="insert" parameterType="BoardVo">
-		<![CDATA[
-			INSERT INTO BOARD 
-		]]>
+		<![CDATA[INSERT INTO BOARD ]]>
 	<choose>
-		<when test="group_no == null">
+		<when test="group_no == 0">
 				<![CDATA[
-				VALUES(BOARD_NO_SEQ.NEXTVAL,#{title},#{contents},#{member_no},#{view_cnt},SYSDATE,BOARD_NO_SEQ.CURRVAL,1,0)
+				VALUES(BOARD_NO_SEQ.NEXTVAL,#{title},#{contents},#{member_no},0,SYSDATE,BOARD_NO_SEQ.CURRVAL,1,0)
 				]]>
 		</when>
 		<otherwise>
 				<![CDATA[
-				VALUES(BOARD_NO_SEQ.NEXTVAL, #{title},#{contents},#{member_no},#{view_cnt},SYSDATE,#{groupNo }, nvl((SELECT MAX(order_no) FROM BOARD),0)+1, #{depth } + 1,  )
+				VALUES(BOARD_NO_SEQ.NEXTVAL, #{title},#{contents},#{member_no},0,SYSDATE,#{group_no }, #{order_no}+1, #{depth } + 1)
 				]]>
 		</otherwise>
 	</choose>
@@ -23,9 +21,14 @@
 		
 	</insert>
 	
+	<update id="updateOrder" parameterType="BoardVo">
+		UPDATE BOARD SET 
+		#{order_no} = #{order_no} +1 WHERE GROUP_NO = #{group_no} and ORDER_NO >= #{group_no}
+	</update>
+	
 	<update id="update" parameterType="BoardVo">
 		<![CDATA[
-			UPDATE board SET title=#{title}, content=#{contents}
+			UPDATE board SET title=#{title}, contents=#{contents}
 			WHERE no=#{no}
 		]]>	
 	</update>
@@ -33,7 +36,7 @@
 	<select id="getView" resultType="BoardVo">
 		<![CDATA[		
 			SELECT 
-			no, title, content, member_no,view_cnt,reg_date,
+			no, title, contents, member_no,view_cnt,reg_date,
 			group_no,order_no,depth 
 			FROM board 
 			WHERE no=#{no}
@@ -42,11 +45,11 @@
 	
 	<select id="getList" resultType="BoardVo">
 		<![CDATA[
-				SELECT a.no, a.title, a.member_no, b.name as member_name, a.view_cnt, 
+				SELECT a.no, a.title, a.member_no, b.name as member_name, a.view_cnt, a.depth, a.order_no, a.group_no,
 						to_char(a.reg_date, 'yyyy-mm-dd hh:mi:ss') AS reg_date
 				FROM board a, member b
 				WHERE a.member_no = b.no
-				ORDER BY a.reg_date desc
+				ORDER BY a.group_no desc , a.order_no asc
 		]]>
 	</select>
 	
