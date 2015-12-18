@@ -16,6 +16,8 @@
 				        http://www.springframework.org/schema/task
         				http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
+	<aop:aspectj-autoproxy/>
+	
 	<context:annotation-config />
 	<!--  
 		Repository,Service,Component -> scanning 해서 Root Appliaction Context에 객체를 생성? 
