@@ -36,6 +36,10 @@ public class BoardService {
 		return list;
 	}
 
+	public void updateViewCnt(BoardVo board) {
+		dao.updateViewCnt(board);
+	}
+
 
 
 }

@@ -46,4 +46,9 @@ public class BoardDao {
 		List<BoardVo> list = sqlSession.selectList("board.getList");
 		return list;
 	}
+
+	public void updateViewCnt(BoardVo board) {
+		sqlSession.update("board.updateViewCnt", board);
+		
+	}
 }

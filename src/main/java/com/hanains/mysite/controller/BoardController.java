@@ -105,9 +105,10 @@ public class BoardController {
 	@Auth
 	@RequestMapping("/view")
 	public String view(@ModelAttribute BoardVo vo, HttpServletRequest request){
-		System.out.println(vo);
 		BoardVo board = boardService.getView(vo);
 
+		boardService.updateViewCnt(board);
+		
 		request.setAttribute("board", board);
 
 		return "/board/view";
