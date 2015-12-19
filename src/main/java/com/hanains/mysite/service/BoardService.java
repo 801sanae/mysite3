@@ -18,18 +18,24 @@ public class BoardService {
 		dao.insert(board);
 	}
 	
+	public void update(BoardVo board) {
+		dao.update(board);
+	}
+
+	public void delete(BoardVo board) {
+		dao.delete(board);
+	}
+	
+	public BoardVo getView(BoardVo board) {
+		BoardVo vo = dao.getView(board);
+		return vo;
+	}
+	
 	public List<BoardVo> getList() {
 		List<BoardVo> list = dao.getList();
 		return list;
 	}
 
-	public BoardVo getView(BoardVo board) {
-		BoardVo vo = dao.getView(board);
-		return vo;
-	}
 
-	public void update(BoardVo board) {
-		dao.update(board);
-	}
 
 }

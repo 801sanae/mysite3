@@ -23,7 +23,7 @@
 	
 	<update id="updateOrder" parameterType="BoardVo">
 		UPDATE BOARD SET 
-		#{order_no} = #{order_no} +1 WHERE GROUP_NO = #{group_no} and ORDER_NO >= #{group_no}
+		order_no = order_no + 1 WHERE group_no = #{group_no} and order_no >=  #{order_no}+1
 	</update>
 	
 	<update id="update" parameterType="BoardVo">
@@ -32,6 +32,13 @@
 			WHERE no=#{no}
 		]]>	
 	</update>
+	
+	<delete id="delete" parameterType="BoardVo">
+		<![CDATA[
+			DELETE FROM board
+			WHERE no = #{no}
+		]]>		
+	</delete>
 	
 	<select id="getView" resultType="BoardVo">
 		<![CDATA[		

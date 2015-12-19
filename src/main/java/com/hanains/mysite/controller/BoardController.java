@@ -29,20 +29,20 @@ import com.hanains.mysite.vo.UserVo;
 public class BoardController {
 
 	private static final String SAVE_PATH = "/temp/"; //저장위치 
-	
+
 	@Autowired
 	private BoardService boardService;
-	
+
 	@Autowired
 	private FileService fileService;
-	
+
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request){
 		List<BoardVo> list  = boardService.getList();
 		request.setAttribute("list", list);
 		return "/board/list";
 	}
-	
+
 	@Auth
 	@RequestMapping("/writeform")
 	public String writeform(@ModelAttribute BoardVo vo, @AuthUser UserVo authUser,
@@ -51,18 +51,18 @@ public class BoardController {
 			@RequestParam(value="depth", required=false, defaultValue="0") int depth,
 			HttpServletRequest request){
 		System.out.println("C:writeform"+authUser);
-		
+
 		vo.setMember_no(authUser.getNo());
 		vo.setDepth(depth);
 		vo.setGroup_no(group_no);
 		vo.setOrder_no(order_no);
-		
+
 		request.setAttribute("board", vo);
-		
-		
+
+
 		return "/board/write";
 	}
-	
+
 	@Auth
 	@RequestMapping("/write")
 	public String write(
@@ -72,64 +72,73 @@ public class BoardController {
 			@ModelAttribute FileVo file,
 			@AuthUser UserVo authUser){
 		vo.setMember_no(authUser.getNo());
-		
+
 		// 파일 처리
-			if( multipartFile.isEmpty() == false ) {
-				
-		        String fileOriginalName = multipartFile.getOriginalFilename();
-		        String extName = fileOriginalName.substring( fileOriginalName.lastIndexOf(".") + 1, fileOriginalName.length() );
-		        String fileName = multipartFile.getName();
-		        Long size = multipartFile.getSize();
-		        
-		        String saveFileName = genSaveFileName( extName );
-		
-		        writeFile( multipartFile, SAVE_PATH, saveFileName );
-		        
-		        String url = "/profile-images/" + saveFileName;
-		
-		        file.setPath(url);
-		        file.setBoardNo(vo.getNo());
-		        
-		        
-		        model.addAttribute( "profileUrl", url );
-			}
-		
-			
+		if( multipartFile.isEmpty() == false ) {
+
+			String fileOriginalName = multipartFile.getOriginalFilename();
+			String extName = fileOriginalName.substring( fileOriginalName.lastIndexOf(".") + 1, fileOriginalName.length() );
+			String fileName = multipartFile.getName();
+			Long size = multipartFile.getSize();
+
+			String saveFileName = genSaveFileName( extName );
+
+			writeFile( multipartFile, SAVE_PATH, saveFileName );
+
+			String url = "/profile-images/" + saveFileName;
+
+			file.setPath(url);
+			file.setBoardNo(vo.getNo());
+
+
+			model.addAttribute( "profileUrl", url );
+		}
+
+
 		fileService.insert(file);
-			
+
 		boardService.insert(vo);
-		
+
 		return "redirect:/board/list";
 	}
-	
+
 	@Auth
-	@RequestMapping("view")
+	@RequestMapping("/view")
 	public String view(@ModelAttribute BoardVo vo, HttpServletRequest request){
-		
+		System.out.println(vo);
 		BoardVo board = boardService.getView(vo);
-		
+
 		request.setAttribute("board", board);
-		
+
 		return "/board/view";
 	}
-	
+
 	@Auth
-	@RequestMapping("updateform")
+	@RequestMapping("/updateform")
 	public String updateform(@ModelAttribute BoardVo vo, HttpServletRequest request){
 		BoardVo board = boardService.getView(vo);
 		request.setAttribute("board", board);
 		return "/board/modify";
 	}
-	
+
 	@Auth
-	@RequestMapping("update")
+	@RequestMapping("/update")
 	public String update(@AuthUser UserVo authUser,
-						@ModelAttribute BoardVo vo){
+			@ModelAttribute BoardVo vo){
 		boardService.update(vo);
 		return "/board/view";
 	}
 	
-	
+	@Auth
+	@RequestMapping("/delete")
+	public String delete(@AuthUser UserVo authUser,@ModelAttribute BoardVo vo){
+		BoardVo board = boardService.getView(vo);
+		boardService.delete(board);
+		
+		return "redirect:/board/list";
+	}
+
+
 	private void writeFile( MultipartFile file, String path, String fileName ) {
 		FileOutputStream fos = null;
 		try {
@@ -147,21 +156,21 @@ public class BoardController {
 			}
 		}
 	}
-	
+
 	private String genSaveFileName( String extName ) {
-		
-        Calendar calendar = Calendar.getInstance();
+
+		Calendar calendar = Calendar.getInstance();
 		String fileName = "";
-        
-        fileName += calendar.get( Calendar.YEAR );
-        fileName += calendar.get( Calendar.MONTH );
-        fileName += calendar.get( Calendar.DATE );
-        fileName += calendar.get( Calendar.HOUR );
-        fileName += calendar.get( Calendar.MINUTE );
-        fileName += calendar.get( Calendar.SECOND );
-        fileName += calendar.get( Calendar.MILLISECOND );
-        fileName += ( "." + extName );
-        
-        return fileName;
+
+		fileName += calendar.get( Calendar.YEAR );
+		fileName += calendar.get( Calendar.MONTH );
+		fileName += calendar.get( Calendar.DATE );
+		fileName += calendar.get( Calendar.HOUR );
+		fileName += calendar.get( Calendar.MINUTE );
+		fileName += calendar.get( Calendar.SECOND );
+		fileName += calendar.get( Calendar.MILLISECOND );
+		fileName += ( "." + extName );
+
+		return fileName;
 	}
 }

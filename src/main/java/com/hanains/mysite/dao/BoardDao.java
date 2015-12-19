@@ -18,16 +18,18 @@ public class BoardDao {
 	//TODO 트렌젝션 @처리
 	@Transactional
 	public void insert(BoardVo board){
-		sqlSession.update("board.update",board);
+		sqlSession.update("board.updateOrder",board);
 		sqlSession.insert("board.insert", board);
 	}
 	
 	//TODO
-	public void delete(){}
+	public void delete(BoardVo board){
+		sqlSession.delete("board.delete", board);
+	}
 	
 	//TODO
 	public void update(BoardVo board){
-		sqlSession.update("DAOupdate : ", board);
+		sqlSession.update("board.update", board);
 	}
 	
 	//TODO

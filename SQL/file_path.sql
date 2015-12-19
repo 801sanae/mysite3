@@ -17,10 +17,3 @@ CREATE SEQUENCE file_no_seq
  MAXVALUE       99999999
  NOCACHE
  NOCYCLE;
- 
- --select
- select * from file_path;
- 
- --insert
- insert into file_path values(FILE_NO_SEQ.NEXTVAL,'abc',1);
- 

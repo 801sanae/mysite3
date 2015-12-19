@@ -49,7 +49,7 @@
 							<td>${board.reg_date}</td>
 					<c:choose>
 						<c:when test="${!empty authUser }">
-							<td><a href="${pageContext.request.contextPath}/" class="del">
+							<td><a href="${pageContext.request.contextPath}/delete?no=${board.no}" class="del">
 							<img src="${pageContext.request.contextPath}/assets/images/recycle.png">
 							</a></td>
 						</c:when>

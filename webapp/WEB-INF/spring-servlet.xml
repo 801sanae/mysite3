@@ -130,7 +130,4 @@
 		</property>
 		<property name="defaultErrorView" value="/error/error" />
 	</bean>
-
-
-
 </beans>
