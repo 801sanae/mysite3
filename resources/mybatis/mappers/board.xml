@@ -33,6 +33,10 @@
 		]]>	
 	</update>
 	
+	<update id="updateViewCnt" parameterType="BoardVo">
+		UPDATE board SET view_cnt = #{view_cnt}+1 WHERE no = #{no}
+	</update>
+	
 	<delete id="delete" parameterType="BoardVo">
 		<![CDATA[
 			DELETE FROM board

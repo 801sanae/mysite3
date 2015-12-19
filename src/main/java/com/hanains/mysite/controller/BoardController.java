@@ -117,6 +117,7 @@ public class BoardController {
 	@RequestMapping("/updateform")
 	public String updateform(@ModelAttribute BoardVo vo, HttpServletRequest request){
 		BoardVo board = boardService.getView(vo);
+		
 		request.setAttribute("board", board);
 		return "/board/modify";
 	}
@@ -124,8 +125,12 @@ public class BoardController {
 	@Auth
 	@RequestMapping("/update")
 	public String update(@AuthUser UserVo authUser,
-			@ModelAttribute BoardVo vo){
+			@ModelAttribute BoardVo vo,
+			HttpServletRequest request){
 		boardService.update(vo);
+		BoardVo board = boardService.getView(vo);
+		
+		request.setAttribute("board", board);
 		return "/board/view";
 	}
 	

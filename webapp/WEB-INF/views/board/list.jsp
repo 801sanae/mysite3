@@ -49,7 +49,7 @@
 							<td>${board.reg_date}</td>
 					<c:choose>
 						<c:when test="${!empty authUser }">
-							<td><a href="${pageContext.request.contextPath}/delete?no=${board.no}" class="del">
+							<td><a href="${pageContext.request.contextPath}/board/delete?no=${board.no}" class="del">
 							<img src="${pageContext.request.contextPath}/assets/images/recycle.png">
 							</a></td>
 						</c:when>
@@ -75,7 +75,9 @@
 						<div class="bottom">
 							<a href="${pageContext.request.contextPath}/board/writeform" id="new-book">글쓰기</a>
 						</div>
-<%-- 				<c:choose>
+				<%--
+				로그인을 해야 글쓰기가 가능				
+				<c:choose>
 					<c:when test="${!empty authUser }">
 						<div class="bottom">
 							<a href="${pageContext.request.contextPath}/board/writeform" id="new-book">글쓰기</a>
@@ -83,8 +85,9 @@
 					</c:when>
 					<c:otherwise>
 					</c:otherwise>
-				</c:choose> --%>
-								
+				</c:choose> 
+				--%>
+
 			</div>
 		</div>
 		<!-- navigation -->
