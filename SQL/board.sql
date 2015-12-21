@@ -12,7 +12,8 @@ view_cnt     NUMBER(10),
 reg_date     DATE NOT NULL,
 group_no   NUMBER (8),
 order_no   NUMBER (8),
-depth      NUMBER (8)
+depth      NUMBER (8),
+filepath  VARCHAR2(500)
 ) ;
 
 ALTER TABLE board

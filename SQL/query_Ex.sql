@@ -19,8 +19,8 @@ delete from member;
 
 --file_path
 --select
- select * from file_path;
  
  --insert
- insert into file_path values(FILE_NO_SEQ.NEXTVAL,'abc',1);
+ 
+ --select
  

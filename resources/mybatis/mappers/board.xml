@@ -8,12 +8,12 @@
 	<choose>
 		<when test="group_no == 0">
 				<![CDATA[
-				VALUES(BOARD_NO_SEQ.NEXTVAL,#{title},#{contents},#{member_no},0,SYSDATE,BOARD_NO_SEQ.CURRVAL,1,0)
+				VALUES(BOARD_NO_SEQ.NEXTVAL,#{title},#{contents},#{member_no},0,SYSDATE,BOARD_NO_SEQ.CURRVAL,1,0,#{filepath})
 				]]>
 		</when>
 		<otherwise>
 				<![CDATA[
-				VALUES(BOARD_NO_SEQ.NEXTVAL, #{title},#{contents},#{member_no},0,SYSDATE,#{group_no }, #{order_no}+1, #{depth } + 1)
+				VALUES(BOARD_NO_SEQ.NEXTVAL, #{title},#{contents},#{member_no},0,SYSDATE,#{group_no }, #{order_no}+1, #{depth } + 1,#{filepath})
 				]]>
 		</otherwise>
 	</choose>
@@ -48,7 +48,8 @@
 		<![CDATA[		
 			SELECT 
 			no, title, contents, member_no,view_cnt,reg_date,
-			group_no,order_no,depth 
+			group_no,order_no,depth,
+			filepath 
 			FROM board 
 			WHERE no=#{no}
 		]]>			

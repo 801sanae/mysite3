@@ -22,6 +22,7 @@
 	<!-- the mvc resources tag does the magic 파일업로드처리3 -->
  	<mvc:resources mapping="/profile-images/**" location="file:/temp/" />
 
+
 	<!-- validator, conversionService, messageConverter를 자동으로 등록 -->
 	<mvc:annotation-driven >
 		<mvc:message-converters>
@@ -120,7 +121,7 @@
 		<property name="defaultEncoding" value="utf-8" />
 	</bean>	
 	
-	<bean id="exceptionResolver"
+<!-- 	<bean id="exceptionResolver"
 		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
@@ -129,5 +130,5 @@
 			</props>
 		</property>
 		<property name="defaultErrorView" value="/error/error" />
-	</bean>
+	</bean> -->
 </beans>

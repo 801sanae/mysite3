@@ -5,10 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,9 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.hanains.mysite.annotation.Auth;
 import com.hanains.mysite.annotation.AuthUser;
 import com.hanains.mysite.service.BoardService;
-import com.hanains.mysite.service.FileService;
 import com.hanains.mysite.vo.BoardVo;
-import com.hanains.mysite.vo.FileVo;
 import com.hanains.mysite.vo.UserVo;
 
 @Controller
@@ -32,9 +28,6 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
-
-	@Autowired
-	private FileService fileService;
 
 	@RequestMapping("/list")
 	public String list(HttpServletRequest request){
@@ -69,10 +62,9 @@ public class BoardController {
 			@ModelAttribute BoardVo vo,
 			@RequestParam( "uploadFile" ) MultipartFile multipartFile, 
 			Model model,
-			@ModelAttribute FileVo file,
 			@AuthUser UserVo authUser){
 		vo.setMember_no(authUser.getNo());
-
+		
 		// 파일 처리
 		if( multipartFile.isEmpty() == false ) {
 
@@ -86,16 +78,13 @@ public class BoardController {
 			writeFile( multipartFile, SAVE_PATH, saveFileName );
 
 			String url = "/profile-images/" + saveFileName;
-
-			file.setPath(url);
-			file.setBoardNo(vo.getNo());
-
-
-			model.addAttribute( "profileUrl", url );
+			
+			vo.setFilepath(url);
+		}else {
+			vo.setFilepath("");
 		}
-
-
-		fileService.insert(file);
+		
+		System.out.println("before = " + vo);
 
 		boardService.insert(vo);
 
@@ -110,7 +99,7 @@ public class BoardController {
 		boardService.updateViewCnt(board);
 		
 		request.setAttribute("board", board);
-
+		
 		return "/board/view";
 	}
 

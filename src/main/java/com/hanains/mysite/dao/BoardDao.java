@@ -36,7 +36,7 @@ public class BoardDao {
 	public BoardVo getView(BoardVo board){
 		
 		BoardVo boardVo =sqlSession.selectOne("board.getView", board); 
-		System.out.println("DAOgetView:"+boardVo);
+		System.out.println("DAO = getView:"+boardVo);
 		return boardVo;
 	}
 	
