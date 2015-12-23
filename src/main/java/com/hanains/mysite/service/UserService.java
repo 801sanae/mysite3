@@ -25,6 +25,10 @@ public class UserService {
 		UserVo userVo = userDao.get(email);
 		return userVo;
 	}
+	
+	public void deleteMember(UserVo vo){
+		userDao.delete(vo);
+	}
 
 
 }

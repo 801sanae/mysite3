@@ -36,5 +36,10 @@
 		]]>
 	</insert>
 	
+	<delete id="deleteNoPassword" parameterType="UserVo">
+		DELETE FROM member 
+		WHERE password=#{password}
+	</delete>
+	
 	
 </mapper>

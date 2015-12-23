@@ -2,11 +2,11 @@
 
 --select
 select * from BOARD;
-
+select * from member;
 
 --delete
 delete FROM BOARD WHERE NO=12;
-delete from member;
+delete from member where no=4 and password='1234';
 
  --update
  UPDATE BOARD SET ORDER_NO = ORDER_NO +1 WHERE GROUP_NO = 1 and ORDER_NO >= 2;

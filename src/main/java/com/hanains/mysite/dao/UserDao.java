@@ -39,4 +39,8 @@ public class UserDao {
 		UserVo vo = sqlSession.selectOne("user.selectByEmail", email);
 		return null;
 	}
+	
+	public void delete(UserVo vo){
+		sqlSession.delete("user.deleteNoPassword", vo);
+	}
 }
